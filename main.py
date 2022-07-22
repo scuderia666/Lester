@@ -12,7 +12,7 @@ token = os.getenv('TOKEN')
 @client.event
 async def on_ready():
     print("Logged in as a bot {0.user}".format(client))
-    await client.change_presence(activity=discord.Game(name="a game"))
+    await client.change_presence(activity=discord.Game(name="oyun"))
 
 @client.event
 async def on_message(message):
