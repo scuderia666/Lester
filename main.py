@@ -21,12 +21,22 @@ def add_warn(username):
 		arr[username] = 0
 	arr[username] = arr[username] + 1
 
+async def dm(ctx):
+    user=await client.get_user_info("User's ID here")
+    await client.send_message(user, "Your message goes here")
+
+async def send_channel_entry():
+    channel = client.get_channel(channel_entry)
+    await channel.send(msg_entry)
+
 @client.event
 async def on_message(message):
 	author = message.author
 	author_name = str(author)
 	username = author_name.split("#")[0]
 	channel = message.channel
+	if channel is not None:
+		print(channel.id)
 	user_message = str(message.content)
 	ment = str(author.mention)
 
@@ -41,6 +51,17 @@ async def on_message(message):
 	if user_message[:1] == "&":
 		msg = user_message[1:]
 		await client.get_channel(int(msg.split(':')[0])).send(msg.split(':')[1])
+
+	if user_message[:1] == "%":
+		msgg = user_message[1:]
+		msg = msgg.split('!')[1]
+		print(msgg.split('!')[0])
+		namee = msg.split(':')[0]
+		nick = namee.split('#')[0]
+		idd = namee.split('#')[1]
+		guild = client.get_guild(int(msgg.split('!')[0]))
+		user = discord.utils.get(guild.members, name=nick, discriminator=idd)
+		await client.send_message(user, msg.split(':')[1])
 
 	if client.user.mentioned_in(message):
 		add_warn(username)
