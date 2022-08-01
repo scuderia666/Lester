@@ -50,7 +50,7 @@ async def on_message(message):
 
 	if user_message[:1] == "&":
 		msg = user_message[1:]
-		await client.get_channel(int(msg.split(':')[0])).send(msg.split(':')[1])
+		await client.get_channel(int(msg.split(':',1)[0])).send(msg.split(':',1)[1])
 
 	if user_message[:1] == "%":
 		msgg = user_message[1:]
