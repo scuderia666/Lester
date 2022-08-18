@@ -3,18 +3,19 @@ import os
 import random
 from discord.ext import commands
 from dotenv import load_dotenv
+from discord.utils import get
 
 load_dotenv()
 
 client = discord.Client()
-token = os.getenv('TOKEN_Lester')
+token = os.getenv('TOKEN2')
 
 arr = {}
 
 @client.event
 async def on_ready():
     print("Logged in as a bot {0.user}".format(client))
-    await client.change_presence(activity=discord.Game(name="Oyun"))
+    await client.change_presence(activity=discord.Game(name="havayı sikiyor"))
 
 def add_warn(username):
 	if username not in arr:
@@ -35,12 +36,12 @@ async def on_message(message):
 	author_name = str(author)
 	username = author_name.split("#")[0]
 	channel = message.channel
-	if channel is not None:
-		print(channel.id)
+	#if channel is not None:
+	#	print(channel.id)
 	user_message = str(message.content)
 	ment = str(author.mention)
 
-	print("{}: {}".format(username, user_message))
+	print("({}) {}: {}".format(author.id, username, user_message))
 
 	if user_message[:1] == "!":
 		command = user_message[1:]
@@ -51,6 +52,11 @@ async def on_message(message):
 	if user_message[:1] == "&":
 		msg = user_message[1:]
 		await client.get_channel(int(msg.split(':',1)[0])).send(msg.split(':',1)[1])
+
+	if user_message[:1] == "$":
+		msg = user_message[1:]
+		user = await client.fetch_user(int(msg.split(':',1)[0]))
+		await user.send(msg.split(':',1)[1])
 
 	if user_message[:1] == "%":
 		msgg = user_message[1:]
@@ -69,10 +75,18 @@ async def on_message(message):
 			await message.channel.send(f"{ment} Bu son uyarıydı.")
 			await message.channel.send(f"!mute {ment}")
 		else:
-			await message.channel.send(f"{ment} Adminleri pinglememelisin evlat.")
+			await message.channel.send(f"{ment} >:(")
 
 	if "amk" in user_message.lower() or "aq" in user_message.lower():
-		await message.channel.send(f'{ment} Ağzını toparla evlat.')
-		add_warn(username)
+		#await message.channel.send(f'{ment} Ağzını toparla evlat.')
+		#add_warn(username)
+		emoji = get(client.emojis, name='lester')
+		await message.add_reaction(emoji)
+	elif "bruh" in user_message.lower():
+		emoji = get(client.emojis, name='bruh')
+		await message.add_reaction(emoji)
+	else:
+		emoji = get(client.emojis, name='hava_skici')
+		await message.add_reaction(emoji)
 
 client.run(token)
